@@ -10,9 +10,9 @@ namespace SPE.BL.Abstract
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        Task<IEnumerable<T>> FindBy(Expression<Func<T, bool>> expression);
-        Task<T> Add(T entity);
-        Task<T> Update(T Entity);
-        Task<T> Delete(T entity);
+        IEnumerable<T> FindBy(Expression<Func<T, bool>> expression);
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }
