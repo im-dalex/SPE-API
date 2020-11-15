@@ -32,7 +32,7 @@ namespace SPE.BL.Repositories.Base
 
         public IEnumerable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
-            return _set.Where(expression);
+            return _set.AsNoTracking().Where(expression);
         }
 
         public async Task<IEnumerable<T>> GetAll()
@@ -43,6 +43,19 @@ namespace SPE.BL.Repositories.Base
         public async Task<T> GetById(int id)
         {
             return await _set.FindAsync(id);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw ex;
+            }
         }
 
         public void Update(T entity)

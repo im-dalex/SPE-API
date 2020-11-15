@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SPE.BL.Abstract.IRepositories;
+using SPE.BL.Mappers;
 using SPE.BL.Repositories;
 using SPE.DataModel.Context;
 using System;
@@ -38,10 +39,10 @@ namespace SPE.Api
 
             services.AddControllers();
 
-            //services.AddAutoMapper(m => 
-            //{
-            //    m.AddProfiles("SPE.BL");
-            //});
+            services.AddAutoMapper(m =>
+            {
+                m.AddProfile(new SPEMappingProfile());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
