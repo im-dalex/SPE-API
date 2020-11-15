@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPE.BL.Abstract;
+using SPE.BL.Models;
 using SPE.DataModel.Abstract;
 using SPE.DataModel.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,14 +22,16 @@ namespace SPE.BL.Repositories.Base
             _set = context.Set<T>();
         }
 
-        public void Add(T entity)
+        public async Task<OperationResult> Add(T entity)
         {
-            _set.Add(entity);
+            await _set.AddAsync(entity);
+            return new OperationResult() { Success = true, StatusCode = HttpStatusCode.Created };
         }
 
-        public void Delete(T entity)
+        public OperationResult Delete(T entity)
         {
             _set.Remove(entity);
+            return new OperationResult() { Success = true, StatusCode = HttpStatusCode.OK };
         }
 
         public IEnumerable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> expression)
@@ -45,22 +49,23 @@ namespace SPE.BL.Repositories.Base
             return await _set.FindAsync(id);
         }
 
-        public async Task<bool> SaveAsync()
+        public async Task<OperationResult> SaveAsync()
         {
             try
             {
                 await _context.SaveChangesAsync();
-                return true;
+                return new OperationResult() { Success = true, StatusCode = HttpStatusCode.OK };
             }
             catch (DbUpdateException ex)
             {
-                throw ex;
+                return new OperationResult() { Message = ex.Message, StatusCode = HttpStatusCode.InternalServerError };
             }
         }
 
-        public void Update(T entity)
+        public OperationResult Update(T entity)
         {
             _set.Update(entity);
+            return new OperationResult() { Success = true, StatusCode = HttpStatusCode.OK };
         }
     }
 }

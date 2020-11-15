@@ -3,6 +3,7 @@ using SPE.DataModel.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using SPE.BL.Models;
 
 namespace SPE.BL.Abstract
 {
@@ -11,9 +12,9 @@ namespace SPE.BL.Abstract
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
         IEnumerable<T> FindBy(Expression<Func<T, bool>> expression);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
-        Task<bool> SaveAsync();
+        Task<OperationResult> Add(T entity);
+        OperationResult Update(T entity);
+        OperationResult Delete(T entity);
+        Task<OperationResult> SaveAsync();
     }
 }

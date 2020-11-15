@@ -46,15 +46,15 @@ namespace SPE.Api.Controller.Base
         {
             if (value == null) return BadRequest();
 
-            _db.Add(value);
-            var result = _db.SaveAsync();
-            if (!result) return BadRequest(value);
+            await _db.Add(value);
+            var result = await _db.SaveAsync();
+            if (!result.Success) return BadRequest(value);
 
             return Ok(value);
         }
 
         [HttpPut("{id}")]
-        public virtual ActionResult<T> Put(int id, [FromBody] T entity)
+        public virtual async Task<ActionResult<T>> Put(int id, [FromBody] T entity)
         {
             if (entity == null || id < 1)
             {
@@ -65,8 +65,8 @@ namespace SPE.Api.Controller.Base
             if (find == null) return NotFound();
 
             _db.Update(entity);
-            var result = _db.SaveAsync();
-            if (!result) return BadRequest(entity);
+            var result = await _db.SaveAsync();
+            if (!result.Success) return BadRequest(entity);
 
             return NoContent();
 
