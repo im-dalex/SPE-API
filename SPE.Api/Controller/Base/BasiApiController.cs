@@ -64,7 +64,7 @@ namespace SPE.Api.Controller.Base
                 return BadRequest();
             }
 
-            var find = _db.GetById(id);
+            var find = await _db.GetById(id);
             if (find == null) return NotFound();
 
             var model = _mapper.Map<T>(dto);

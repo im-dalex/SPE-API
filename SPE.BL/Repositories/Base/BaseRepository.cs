@@ -46,7 +46,7 @@ namespace SPE.BL.Repositories.Base
 
         public async Task<T> GetById(int id)
         {
-            return await _set.FindAsync(id);
+            return await _set.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<OperationResult> SaveAsync()
