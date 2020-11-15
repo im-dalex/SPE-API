@@ -28,6 +28,7 @@ namespace SPE.DataModel.EntityConfiguration
 
             builder.Property(p => p.PermissionDate)
                 .IsRequired()
+                .HasColumnType("date")
                 .HasDefaultValueSql("getdate()");
 
             builder.HasOne(p => p.PermissionType)

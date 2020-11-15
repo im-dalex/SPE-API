@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPE.DataModel.Context;
 
 namespace SPE.Api.Migrations
 {
     [DbContext(typeof(SPEDbContext))]
-    partial class SPEDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201115172423_ChangePermissionDateType")]
+    partial class ChangePermissionDateType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
