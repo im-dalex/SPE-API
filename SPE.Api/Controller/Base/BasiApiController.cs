@@ -24,13 +24,14 @@ namespace SPE.Api.Controller.Base
         }
 
         [HttpGet]
-        public virtual async Task<IEnumerable<T>> Get()
+        public virtual async Task<IEnumerable<TD>> Get()
         {
-            return await _db.GetAll();
+            var models = await _db.GetAll();
+            return _mapper.Map<IEnumerable<TD>>(models);
         }
 
         [HttpGet("{key}")]
-        public virtual async Task<ActionResult<T>> Get(int key)
+        public virtual async Task<ActionResult<TD>> Get(int key)
         {
             if (key < 1) return BadRequest();
 
@@ -38,25 +39,27 @@ namespace SPE.Api.Controller.Base
 
             if (result == null) return NotFound();
 
-            return Ok(result);
+            return Ok(_mapper.Map<TD>(result));
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<T>> Post(T value)
+        public virtual async Task<ActionResult<T>> Post(TD value)
         {
             if (value == null) return BadRequest();
 
-            await _db.Add(value);
-            var result = await _db.SaveAsync();
-            if (!result.Success) return BadRequest(value);
+            var model = _mapper.Map<T>(value);
+            await _db.Add(model);
+
+            var resultSave = await _db.SaveAsync();
+            if (!resultSave.Success) return BadRequest(value);
 
             return Ok(value);
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<T>> Put(int id, [FromBody] T entity)
+        public virtual async Task<ActionResult<T>> Put(int id, [FromBody] TD dto)
         {
-            if (entity == null || id < 1)
+            if (dto == null || id < 1)
             {
                 return BadRequest();
             }
@@ -64,12 +67,30 @@ namespace SPE.Api.Controller.Base
             var find = _db.GetById(id);
             if (find == null) return NotFound();
 
-            _db.Update(entity);
+            var model = _mapper.Map<T>(dto);
+            _db.Update(model);
             var result = await _db.SaveAsync();
-            if (!result.Success) return BadRequest(entity);
+            if (!result.Success) return BadRequest(dto);
 
             return NoContent();
 
+        }
+
+        [HttpDelete("{id}")]
+        public virtual async Task<ActionResult<T>> Delete(int id)
+        {
+            if (id < 1) return BadRequest();
+
+            var model = await _db.GetById(id);
+            if (model == null) return NotFound();
+
+            var result = _db.Delete(model);
+            if (!result.Success) return BadRequest(model);
+
+            var resultSave = await _db.SaveAsync();
+            if (!resultSave.Success) return BadRequest(model);
+
+            return NoContent();
         }
     }
 }
