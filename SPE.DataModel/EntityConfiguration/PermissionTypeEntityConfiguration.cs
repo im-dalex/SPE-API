@@ -20,6 +20,12 @@ namespace SPE.DataModel.EntityConfiguration
                 .HasMaxLength(250)
                 .IsUnicode(false)
                 .IsRequired();
+
+            builder.HasData(new PermissionType[] {
+                new PermissionType { Id = 1, Description = "Enfermedad" },
+                new PermissionType { Id = 2, Description = "Diligencias" },
+                new PermissionType { Id = 3, Description = "Otros" }
+            });
         }
     }
 }

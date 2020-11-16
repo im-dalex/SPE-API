@@ -1,7 +1,5 @@
 ﻿using SPE.DataModel.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SPE.DataModel.Entities
 {

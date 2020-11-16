@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,10 +9,7 @@ using SPE.BL.Abstract.IRepositories;
 using SPE.BL.Mappers;
 using SPE.BL.Repositories;
 using SPE.DataModel.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SPE.Api
 {
@@ -43,6 +39,18 @@ namespace SPE.Api
             {
                 m.AddProfile(new SPEMappingProfile());
             });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +62,8 @@ namespace SPE.Api
             }
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

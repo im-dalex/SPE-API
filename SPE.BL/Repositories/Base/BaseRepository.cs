@@ -22,34 +22,34 @@ namespace SPE.BL.Repositories.Base
             _set = context.Set<T>();
         }
 
-        public async Task<OperationResult> Add(T entity)
+        public virtual async Task<OperationResult> Add(T entity)
         {
             await _set.AddAsync(entity);
             return new OperationResult() { Success = true, StatusCode = HttpStatusCode.Created };
         }
 
-        public OperationResult Delete(T entity)
+        public virtual OperationResult Delete(T entity)
         {
             _set.Remove(entity);
             return new OperationResult() { Success = true, StatusCode = HttpStatusCode.OK };
         }
 
-        public IEnumerable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public virtual IEnumerable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
             return _set.AsNoTracking().Where(expression);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
             return await _set.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public virtual async Task<T> GetById(int id)
         {
             return await _set.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<OperationResult> SaveAsync()
+        public virtual async Task<OperationResult> SaveAsync()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace SPE.BL.Repositories.Base
             }
         }
 
-        public OperationResult Update(T entity)
+        public virtual  OperationResult Update(T entity)
         {
             _set.Update(entity);
             return new OperationResult() { Success = true, StatusCode = HttpStatusCode.OK };

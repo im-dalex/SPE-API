@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SPE.BL.Dtos
 {
@@ -15,6 +16,7 @@ namespace SPE.BL.Dtos
         public int Id { get; set; }
         public string Description { get; set; }
 
+        [JsonIgnore]
         public ICollection<PermissionDto> Permission { get; set; }
 
     }

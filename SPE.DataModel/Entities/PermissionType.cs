@@ -1,7 +1,6 @@
 ﻿using SPE.DataModel.Abstract;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SPE.DataModel.Entities
 {
@@ -15,6 +14,7 @@ namespace SPE.DataModel.Entities
         public int Id { get; set; }
         public string Description { get; set; }
 
+        [JsonIgnore]
         public ICollection<Permission> Permission { get; set; }
     }
 }
